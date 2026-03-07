@@ -7,18 +7,12 @@ use App\Models\UserModel;
 
 class UserController extends Controller
 {
-    public function index()
+  public function index()
 {
-    // Tambah data user dengan Eloquent
-    $data = [
-        'level_id' => 2,
-        'username' => 'manager_empat',
-        'nama' => 'Manager 4',
-        'password' => bcrypt('12345') // password tetap diisi
-    ];
+    $user = UserModel::where('level_id', 2)->firstOr(function() {
+        return "Tidak ada user dengan level_id 2";
+    });
     
-    UserModel::create($data);
-    
-    return "Data user berhasil ditambahkan";
+    return view('user', ['data' => $user]);
 }
-}   
+}

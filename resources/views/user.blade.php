@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data User</title>
+    <title>Data User - Aggregates</title>
     <style>
         table {
             border-collapse: collapse;
@@ -19,36 +19,44 @@
             background-color: #4CAF50;
             color: white;
         }
-        .error {
-            color: red;
-            font-weight: bold;
+        .info-box {
+            background-color: #e7f3fe;
+            border-left: 6px solid #2196F3;
+            padding: 10px;
+            margin-bottom: 15px;
         }
     </style>
 </head>
 <body>
-    <h1>Data User</h1>
+    <h1>Aggregates Data User</h1>
     
-    @if($data && is_object($data))
-        <table>
-            <tr>
-                <th>User ID</th>
-                <th>Level ID</th>
-                <th>Username</th>
-                <th>Nama</th>
-                <th>Password</th>
-            </tr>
-            <tr>
-                <td>{{ $data->user_id }}</td>
-                <td>{{ $data->level_id }}</td>
-                <td>{{ $data->username }}</td>
-                <td>{{ $data->nama }}</td>
-                <td>{{ $data->password }}</td>
-            </tr>
-        </table>
-    @elseif($data && is_string($data))
-        <p class="error">{{ $data }}</p>
-    @else
-        <p>Data tidak ditemukan</p>
-    @endif
+    <div class="info-box">
+        <strong>Method Aggregates:</strong> count(), max(), min(), avg()
+    </div>
+    
+    <table>
+        <tr>
+            <th>Jumlah User</th>
+            <td>{{ $jumlah }}</td>
+        </tr>
+        <tr>
+            <th>Level ID Tertinggi (Max)</th>
+            <td>{{ $max }}</td>
+        </tr>
+        <tr>
+            <th>Level ID Terendah (Min)</th>
+            <td>{{ $min }}</td>
+        </tr>
+        <tr>
+            <th>Rata-rata Level ID (Avg)</th>
+            <td>{{ $avg }}</td>
+        </tr>
+    </table>
+    
+    <p>Total data di tabel m_user: {{ $jumlah }} baris</p>
+    <tr>
+    <th>Total Level ID (Sum)</th>
+    <td>{{ $sum ?? '-' }}</td>
+</tr>
 </body>
 </html>

@@ -7,12 +7,13 @@ use App\Models\UserModel;
 
 class UserController extends Controller
 {
-  public function index()
+    public function index()
 {
-    $user = UserModel::where('level_id', 2)->firstOr(function() {
-        return "Tidak ada user dengan level_id 2";
-    });
-    
-    return view('user', ['data' => $user]);
-}
+    try {
+        $user = UserModel::findOrFail(1);
+        return view('user', ['data' => $user]);
+    } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+        return "Data user tidak ditemukan";
+    }
+}   
 }

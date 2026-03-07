@@ -7,13 +7,18 @@ use App\Models\UserModel;
 
 class UserController extends Controller
 {
-   public function index()
+    public function index()
 {
-    // Ambil semua data user dengan Eloquent
-    $data = UserModel::all();
+    // Tambah data user dengan Eloquent
+    $data = [
+        'level_id' => 2,
+        'username' => 'manager_empat',
+        'nama' => 'Manager 4',
+        'password' => bcrypt('12345') // password tetap diisi
+    ];
     
-    // Kirim data ke view
-    return view('user', compact('data'));
+    UserModel::create($data);
+    
+    return "Data user berhasil ditambahkan";
 }
-
-}
+}   

@@ -15,5 +15,8 @@ Route::get('/level', [LevelController::class, 'index']);
 // Route untuk KategoriController (Query Builder)
 Route::get('/kategori', [KategoriController::class, 'index']);
 
-// Route untuk UserController (Eloquent ORM)
+// Route untuk method khusus attributeChanges
+Route::get('/user/attribute-changes', [UserController::class, 'attributeChanges']);
+
+// Route untuk method index (tetap ada)
 Route::get('/user', [UserController::class, 'index']);

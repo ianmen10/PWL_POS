@@ -7,68 +7,69 @@ use App\Models\UserModel;
 
 class UserController extends Controller
 {
-   public function index()
-{
-    // Ambil data user dengan ID 1
-    $user = UserModel::find(1);
+    // READ - Menampilkan semua data
+    public function index()
+    {
+        $data = UserModel::all();
+        return view('user', compact('data'));
+    }
     
-    // Ubah atribut
-    $user->username = 'admin_changed';
-    $user->nama = 'Administrator Changed';
+    // CREATE - Menampilkan form tambah user
+    public function tambah()
+    {
+        return view('user_tambah');
+    }
     
-    // Simpan perubahan ke database
-    $user->save();
-    
-    // Cek apakah ada perubahan setelah disimpan
-    if ($user->wasChanged()) {
-        echo "Data BERHASIL diubah! <br>";
-        echo "Kolom yang berubah saat penyimpanan: <br>";
+    // CREATE - Menyimpan data user baru
+    public function tambah_simpan(Request $request)
+    {
+        UserModel::create([
+            'level_id' => $request->level_id,
+            'username' => $request->username,
+            'nama' => $request->nama,
+            'password' => bcrypt($request->password)
+        ]);
         
-        // Tampilkan kolom yang berubah
-        $changes = $user->getChanges();
-        foreach ($changes as $column => $newValue) {
-            echo "- $column: '$newValue' <br>";
+        return redirect('/user')->with('success', 'Data user berhasil ditambahkan!');
+    }
+    
+    // UPDATE - Menampilkan form ubah user
+    public function ubah($id)
+    {
+        $user = UserModel::find($id);
+        return view('user_ubah', compact('user'));
+    }
+    
+    // UPDATE - Menyimpan perubahan data user
+    public function ubah_simpan($id, Request $request)
+    {
+        $user = UserModel::find($id);
+        
+        $user->level_id = $request->level_id;
+        $user->username = $request->username;
+        $user->nama = $request->nama;
+        
+        if ($request->password) {
+            $user->password = bcrypt($request->password);
         }
-    } else {
-        echo "Tidak ada perubahan yang disimpan.";
+        
+        $user->save();
+        
+        return redirect('/user')->with('success', 'Data user berhasil diubah!');
     }
     
-    // Cek kolom tertentu
-    echo "<hr>";
-    echo "Apakah username berubah? " . ($user->wasChanged('username') ? 'Ya' : 'Tidak') . "<br>";
-    echo "Apakah nama berubah? " . ($user->wasChanged('nama') ? 'Ya' : 'Tidak') . "<br>";
-    echo "Apakah level_id berubah? " . ($user->wasChanged('level_id') ? 'Ya' : 'Tidak') . "<br>";
-    
-    return;
-}
-
-public function attributeChanges()
-{
-    // Praktikum 2.5 - Attribute Changes
-    $user = UserModel::find(1);
-    
-    echo "<h1>Praktikum 2.5 - Attribute Changes</h1>";
-    
-    // isDirty() - Sebelum disimpan
-    echo "<h2>1. isDirty() - Sebelum disimpan</h2>";
-    $user->username = 'admin_dirty';
-    if ($user->isDirty()) {
-        echo "Data berubah: " . json_encode($user->getDirty()) . "<br>";
+    // DELETE - Menghapus data user
+    public function hapus($id)
+    {
+        $user = UserModel::find($id);
+        $user->delete();
+        
+        return redirect('/user')->with('success', 'Data user berhasil dihapus!');
     }
     
-    // isClean() - Sebelum disimpan
-    echo "<h2>2. isClean() - Sebelum disimpan</h2>";
-    echo "Apakah username bersih? " . ($user->isClean('username') ? 'Ya' : 'Tidak') . "<br>";
-    
-    // Simpan perubahan
-    $user->save();
-    
-    // wasChanged() - Setelah disimpan
-    echo "<h2>3. wasChanged() - Setelah disimpan</h2>";
-    if ($user->wasChanged()) {
-        echo "Data berhasil diubah: " . json_encode($user->getChanges()) . "<br>";
+    // Method-method praktikum sebelumnya (bisa dipindah ke route terpisah)
+    public function attributeChanges()
+    {
+        // ... kode dari praktikum 2.5 ...
     }
-    
-    return;
-}
 }

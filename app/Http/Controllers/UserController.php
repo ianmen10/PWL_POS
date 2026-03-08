@@ -9,20 +9,27 @@ class UserController extends Controller
 {
     public function index()
 {
-    $jumlahUser = UserModel::count();
-    $maxLevelId = UserModel::max('level_id');
-    $minLevelId = UserModel::min('level_id');
-    $avgLevelId = UserModel::avg('level_id');
+    // firstOrNew lalu di-save
+    $user = UserModel::firstOrNew(
+        ['username' => 'kasir_utama'],  // Kriteria pencarian
+        [
+            'nama' => 'Kasir Utama',
+            'level_id' => 3,
+            'password' => bcrypt('12345')
+        ]
+    );
     
-    // Method aggregate lainnya
-    $sumLevelId = UserModel::sum('level_id');  // Menjumlah semua level_id
+    // Simpan ke database jika ini adalah object baru
+    if (!$user->exists) {
+        $user->save();
+        $status = "Data baru berhasil disimpan";
+    } else {
+        $status = "Data sudah ada";
+    }
     
     return view('user', [
-        'jumlah' => $jumlahUser,
-        'max' => $maxLevelId,
-        'min' => $minLevelId,
-        'avg' => $avgLevelId,
-        'sum' => $sumLevelId  // Tambahkan sum
+        'data' => $user,
+        'status' => $status
     ]);
 }
 }

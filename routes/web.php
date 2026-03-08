@@ -4,10 +4,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LevelController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WelcomeController; // TAMBAHKAN INI
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// ==================== ROUTE WELCOME (PRAKTIKUM 2) ====================
+Route::get('/', [WelcomeController::class, 'index']);
 
 // ==================== ROUTE PRAKTIKUM SEBELUMNYA ====================
 
@@ -42,5 +42,5 @@ Route::put('/user/ubah_simpan/{id}', [UserController::class, 'ubah_simpan']);
 Route::get('/user/hapus/{id}', [UserController::class, 'hapus']);
 
 
-// Route untuk Praktikum 2.7 - Relationships
+// ==================== ROUTE PRAKTIKUM 2.7 - RELATIONSHIPS ====================
 Route::get('/user/relationships', [UserController::class, 'relationshipsView']);

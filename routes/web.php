@@ -40,3 +40,7 @@ Route::put('/user/ubah_simpan/{id}', [UserController::class, 'ubah_simpan']);
 
 // DELETE - Menghapus data user
 Route::get('/user/hapus/{id}', [UserController::class, 'hapus']);
+
+
+// Route untuk Praktikum 2.7 - Relationships
+Route::get('/user/relationships', [UserController::class, 'relationshipsView']);

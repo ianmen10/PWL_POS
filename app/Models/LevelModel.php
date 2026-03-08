@@ -1,0 +1,26 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class LevelModel extends Model
+{
+    use HasFactory;
+
+    protected $table = 'm_level';
+    protected $primaryKey = 'level_id';
+    public $timestamps = true;
+
+    protected $fillable = [
+        'level_kode',
+        'level_nama'
+    ];
+
+    // Relasi One to Many ke UserModel
+    public function users()
+    {
+        return $this->hasMany(UserModel::class, 'level_id', 'level_id');
+    }
+}
